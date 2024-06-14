@@ -31,30 +31,6 @@ socket.addEventListener("error",function(event){
 });
 
 socket.onmessage = function (event) {
-  // console.log(event.data)
-  // board.position(event.data)
-  // game.load(event.data)
-
-
-  // let s = event.data;
-  // if (["White", "Black"].includes(s)) {
-  //   colour = (s === "White") ? "w" : "b";
-  //   console.log(colour)
-  // } else {
-  //   r = s[s.length-1]
-  //   let z = s.slice(0, -1);
-  //     // console.log(colour,r);
-  //     board.position(z);
-  //     game.move({
-  //       from: source,
-  //       to: target,
-  //       promotion: 'q' // NOTE: always promote to a queen for example simplicity
-  //     })
-  //     game.load(z);
-  //     $fen.html(z)
-
-  //   }
-
     datareceived = JSON.parse(event.data);
     console.log(datareceived)
     if (datareceived["mode"]==="status"){
@@ -70,11 +46,7 @@ socket.onmessage = function (event) {
         promotion: 'q'
       })
       shade(datareceived["move"])
-      // $fen.html(datareceived["move"]["after"])
-      // $pgn.html(game.pgn())
       updateStatus()
-      // onMoveEnd()
-      // $status.html(datareceived["status"])
     }
     else if (datareceived["mode"]==="undo"){
       r = ""
@@ -83,8 +55,6 @@ socket.onmessage = function (event) {
       game.undo()
       board.position(game.fen())
       updateStatus()
-      
-      // $pgn.html(game.pgn())
     }
 
     else if (datareceived["mode"]==="allowed"){
@@ -113,11 +83,6 @@ socket.onmessage = function (event) {
       r = "w"
       removeHighlights("black")
       removeHighlights("white")
-      
-      // updateStatus()
-      // $status.html(status)
-      // $fen.html(game.fen())
-      // $pgn.html(game.pgn())
       updateStatus()
     }
 };
@@ -139,9 +104,6 @@ removeHighlights("white")
 jsonString = JSON.stringify(dataTotransmit)
 socket.send(jsonString)
 updateStatus()
-// $status = $('#status')
-// $fen.html(game.fen())
-// $pgn.html(game.pgn())
 r = "w"
 }
 
@@ -154,9 +116,6 @@ function onundo() {
     if (game.turn()==="w"){removeHighlights("black")}
     board.position(p)
     game.undo()
-    // $pgn.html(game.pgn())
-    // $fen.html(game.fen())
-
     socket.send(jsonString)
 
     p = ""
@@ -172,9 +131,6 @@ function permit(){
 }
 document.getElementById("undo").addEventListener("click", permit);
 document.getElementById("Reset").addEventListener("click", onreset);
-
-// document.getElementById("redo").addEventListener("click", onredo);
-
 
 
 function onDragStart (source, piece, position, orientation) {
@@ -239,12 +195,6 @@ function shade(move){
 function onMoveEnd () {
   $board.find('.square-' + squareToHighlight)
   .addClass('highlight-' + colorToHighlight)
-  // if (game.turn==="w"){
-  // $board.find('.square-' + squareToHighlight)
-  //   .addClass('highlight-black')}
-  // if (game.turn==="b"){
-  //   $board.find('.square-' + squareToHighlight)
-  //   .addClass('highlight-white')}
   }
 
 
